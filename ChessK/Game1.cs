@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using ChessK.ChessPieces;
 using ChessK.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,6 +13,7 @@ namespace ChessK
         private SpriteBatch _spriteBatch;
         private Board board;
         private Texture2D square;
+        private Texture2D pieces;
 
         private int offset = 90;
         private int horizontalOffset;
@@ -37,7 +39,7 @@ namespace ChessK
         {
             
             // TODO: Add your initialization logic here
-            square = Content.Load<Texture2D>("Square");
+            
             
             base.Initialize();
         }
@@ -47,6 +49,8 @@ namespace ChessK
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            square = Content.Load<Texture2D>("Square");
+            pieces = Content.Load<Texture2D>("Pieces");
         }
 
         protected override void Update(GameTime gameTime)
@@ -83,15 +87,99 @@ namespace ChessK
             GraphicsDevice.Clear(Color.DimGray);
 
             // TODO: Add your drawing code here
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+
             foreach (Square square in board.getBoard())
             {
                 square.texture = this.square;
-                
 
                 if(square.getColor() == "white") _spriteBatch.Draw(square.texture, new Rectangle(square.getRow() * offset + horizontalOffset, square.getColumn() * offset, offset, offset), Color.White);
                 else _spriteBatch.Draw(square.texture, new Rectangle(square.getRow() * offset + horizontalOffset, square.getColumn() * offset, offset, offset), Color.Black);
+                
+                Piece piece = square.getPiece();
+                if(piece == null) continue;
+                
+                Rectangle sourceRectangle;
+                Rectangle destinationRectangle = new Rectangle(square.getRow() * offset + horizontalOffset + 7, square.getColumn() * offset, 80, 80); 
+                switch (piece.type)
+                {
+                    case Piece.ChessPieceType.Rook:
+
+                        if (piece.getColor() == "white")
+                        {
+                            sourceRectangle = new Rectangle(0, 0, 16, 16); 
+                        }
+                        else
+                        {
+                            sourceRectangle = new Rectangle(0, 16, 16, 16); 
+                        }
+                        _spriteBatch.Draw(pieces, destinationRectangle, sourceRectangle, Color.White);
+                        break;
+
+                    case Piece.ChessPieceType.Knight:
+                        if (piece.getColor() == "white")
+                        {
+                            sourceRectangle = new Rectangle(16, 0, 16, 16);
+                        }
+                        else
+                        {
+                            sourceRectangle = new Rectangle(16, 16, 16, 16);
+                        }
+                        _spriteBatch.Draw(pieces, destinationRectangle, sourceRectangle, Color.White);
+                        break;
+
+                    case Piece.ChessPieceType.Bishop:
+                        if (piece.getColor() == "white")
+                        {
+                            sourceRectangle = new Rectangle(32, 0, 16, 16);
+                        }
+                        else
+                        {
+                            sourceRectangle = new Rectangle(32, 16, 16, 16);
+                        }
+                        _spriteBatch.Draw(pieces, destinationRectangle, sourceRectangle, Color.White);
+                        break;
+                    case Piece.ChessPieceType.Queen:
+                        if (piece.getColor() == "white")
+                        {
+                            sourceRectangle = new Rectangle(48, 0, 16, 16);
+                        }
+                        else
+                        {
+                            sourceRectangle = new Rectangle(48, 16, 16, 16);
+                        }
+                        _spriteBatch.Draw(pieces, destinationRectangle, sourceRectangle, Color.White);
+                        break;
+                    case Piece.ChessPieceType.King:
+                        if (piece.getColor() == "white")
+                        {
+                            sourceRectangle = new Rectangle(64, 0, 16, 16);
+                        }
+                        else
+                        {
+                            sourceRectangle = new Rectangle(64, 16, 16, 16);
+                        }
+                        _spriteBatch.Draw(pieces, destinationRectangle, sourceRectangle, Color.White);
+                        break;
+                    case Piece.ChessPieceType.Pawn:
+                        if (piece.getColor() == "white")
+                        {
+                            sourceRectangle = new Rectangle(80, 0, 16, 16);
+                        }
+                        else
+                        {
+                            sourceRectangle = new Rectangle(80, 16, 16, 16);
+                        }
+                        _spriteBatch.Draw(pieces, destinationRectangle, sourceRectangle, Color.White);
+                        break;
+
+                }
+
+
+
             }
+
+
             _spriteBatch.End();
             base.Draw(gameTime);
         }

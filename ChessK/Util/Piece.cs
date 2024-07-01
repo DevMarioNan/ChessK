@@ -10,11 +10,27 @@ namespace ChessK.Util
     {
         private string color;
         private string icon;
+        public enum ChessPieceType
+        {
+            King,
+            Queen,
+            Rook,
+            Bishop,
+            Knight,
+            Pawn
+        }
 
-        public Piece(string color, string icon)
+        public ChessPieceType type;
+
+        public Piece(string color)
         {
             this.color = color;
-            this.icon = icon;
+
+        }
+
+        public String getColor()
+        {
+            return color;
         }
 
         public virtual bool isValidMove(Board board, int startRow, int startColumn, int endRow, int endColumn)
